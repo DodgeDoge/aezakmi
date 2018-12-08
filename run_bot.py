@@ -16,6 +16,14 @@ print("готов к работе")
 
  #+ str(long_poll))
 
+def write_msg_attach(user_id, text, att_url):
+    vk_bot.method('messages.send',
+                  {'user_id': user_id,
+                   'attachment': att_url,
+                   'message': text,
+                   'random_id': random.randint(0, 1000)})
+
+
 while True:
  long_poll = requests.get(
         'https://{server}?act={act}&key={key}&ts={ts}&wait=1500'.format(server=server,
@@ -30,6 +38,9 @@ while True:
         write_msg(user_id, 'здоров, ' + (user_name[0]['first_name']))  # cooбщение пользователю
         print(str(user_name[0]['first_name']) + ' ' +
               str(user_name[0]['last_name']) + ' написал(а) боту - ' + str(update[0][6]))  # cooбщение пользователя
-
+        if 'картинк' in update[0][6]:
+            write_msg_attach(user_id,
+                             'вот тебе огненная кортенка',
+                             'photo354852936_456241319')
     # меняем ts для след запроса
  ts = long_poll['ts']
