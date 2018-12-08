@@ -33,3 +33,5 @@ while True:
 
     # меняем ts для след запроса
  ts = long_poll['ts']
+ # jopa
+ jopa = 'переменная для проверки'
