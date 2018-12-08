@@ -17,13 +17,13 @@ print("готов к работе")
  #+ str(long_poll))
 
 while True:
-    long_poll = requests.get(
-        'https://{server}?act={act}&key={key}&ts={ts}&wait=500'.format(server=server,
+ long_poll = requests.get(
+        'https://{server}?act={act}&key={key}&ts={ts}&wait=1500'.format(server=server,
                                                                        act='a_check',
                                                                        key=key,
                                                                        ts=ts)).json()
-    update = long_poll['updates']
-    if update[0][0] == 4:
+ update = long_poll['updates']
+ if update[0][0] == 4:
         print(update)
         user_id = update[0][3]
         user_name = vk_bot.method('users.get', {'user_ids': user_id})
@@ -32,4 +32,4 @@ while True:
               str(user_name[0]['last_name']) + ' написал(а) боту - ' + str(update[0][6]))  # cooбщение пользователя
 
     # меняем ts для след запроса
-    ts = long_poll['ts']
+ ts = long_poll['ts']
