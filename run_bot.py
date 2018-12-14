@@ -21,7 +21,7 @@ def write_msg_attach(user_id, text, att_url):
                   {'user_id': user_id,
                    'attachment': att_url,
                    'message': text,
-                   'random_id': random.randint(0, 1000)})
+                   'random_id': random.randint(0, 5000)})
 
 
 while True:
@@ -35,12 +35,26 @@ while True:
         print(update)
         user_id = update[0][3]
         user_name = vk_bot.method('users.get', {'user_ids': user_id})
-        write_msg(user_id, 'здоров, ' + (user_name[0]['first_name']))  # cooбщение пользователю
+        if 'привет' in update[0][6]:
+            write_msg(user_id, 'здоров, ' + (user_name[0]['first_name']))  # cooбщение пользователю
         print(str(user_name[0]['first_name']) + ' ' +
               str(user_name[0]['last_name']) + ' написал(а) боту - ' + str(update[0][6]))  # cooбщение пользователя
-        if 'картинк' in update[0][6]:
+        if 'матриц' in update[0][6]:
             write_msg_attach(user_id,
-                             'вот тебе огненная кортенка',
-                             'photo354852936_456241319')
+                             'Во имя чего, мистер Андерсен?',
+                             'audio354852936_456239159')
+        elif 'хочу' in update[0][6]:
+            write_msg_attach(user_id,
+                             '',
+                             'photo-175213469_456239022')
+        elif 'хачу' in update[0][6]:
+            write_msg_attach(user_id,
+                             '',
+                             'photo-175213469_456239022')
+        elif 'нет смысла' in update[0][6]:
+            write_msg_attach(user_id,
+                             '',
+                             'photo-133584636_456240049')
+        else: write_msg(user_id, 'кавуо')
     # меняем ts для след запроса
  ts = long_poll['ts']
