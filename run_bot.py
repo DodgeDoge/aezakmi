@@ -22,6 +22,15 @@ def write_msg_attach(user_id, text, att_url):
                    'attachment': att_url,
                    'message': text,
                    'random_id': random.randint(0, 5000)})
+def get_last_post(owner_id, count, offset, filter):
+    response = vk_bot_user.method('wall_get',
+                                  {'owner_id': owner_id,
+                                   'count': count,
+                                   'offset': offset,
+                                   'filter': filter})
+
+    return response['items'][0]['id']
+vk_bot_user = vk_api.VkApi(token=ACCOUNT_TOKEN)
 
 
 while True:
@@ -39,7 +48,13 @@ while True:
             write_msg(user_id, 'здоров, ' + (user_name[0]['first_name']))  # cooбщение пользователю
         print(str(user_name[0]['first_name']) + ' ' +
               str(user_name[0]['last_name']) + ' написал(а) боту - ' + str(update[0][6]))  # cooбщение пользователя
-        if 'матриц' in update[0][6]:
+        if 'красив' in update[0][6]:
+            group_id = -35684707
+            post_id = get_last_post(group_id, 1, 1, 'owner')
+            attach = 'wall' + str(group_id) + '_' + str(post_id)
+            write_msg_attach(user_id, 'держи', attach)
+
+        elif 'матриц' in update[0][6]:
             write_msg_attach(user_id,
                              'Во имя чего, мистер Андерсен?',
                              'audio354852936_456239159')
