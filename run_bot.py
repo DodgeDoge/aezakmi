@@ -30,12 +30,12 @@ def get_last_post(owner_id, count, offset, filter):
                                    'filter': filter})
 
     return response['items'][0]['id']
-vk_bot_user = vk_api.VkApi(token=ACCOUNT_TOKEN)
+#vk_bot_user = vk_api.VkApi(token=ACCESS_TOKEN)
 
 
 while True:
  long_poll = requests.get(
-        'https://{server}?act={act}&key={key}&ts={ts}&wait=1500'.format(server=server,
+        'https://{server}?act={act}&key={key}&ts={ts}&wait=15000'.format(server=server,
                                                                        act='a_check',
                                                                        key=key,
                                                                        ts=ts)).json()
@@ -53,23 +53,12 @@ while True:
             post_id = get_last_post(group_id, 1, 1, 'owner')
             attach = 'wall' + str(group_id) + '_' + str(post_id)
             write_msg_attach(user_id, 'держи', attach)
-
+        elif 'домашка' in update[0][6]:
+            write_msg_attach()
         elif 'матриц' in update[0][6]:
             write_msg_attach(user_id,
                              'Во имя чего, мистер Андерсен?',
                              'audio354852936_456239159')
-        elif 'хочу' in update[0][6]:
-            write_msg_attach(user_id,
-                             '',
-                             'photo-175213469_456239022')
-        elif 'хачу' in update[0][6]:
-            write_msg_attach(user_id,
-                             '',
-                             'photo-175213469_456239022')
-        elif 'нет смысла' in update[0][6]:
-            write_msg_attach(user_id,
-                             '',
-                             'photo-133584636_456240049')
         else: write_msg(user_id, 'кавуо')
     # меняем ts для след запроса
  ts = long_poll['ts']
