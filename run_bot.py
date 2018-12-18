@@ -1,9 +1,11 @@
 import random
-
+import datetime
+d = datetime.date.today()
+tomm = datetime.datetime.isoweekday(d) + 1
 import requests
 import vk_api
 from config import *
-
+request = request.lower
 
 def write_msg(user_id, text):
     vk_bot.method('messages.send', {'user_id': user_id, 'message': text, 'random_id': random.randint(0, 1000)})
@@ -15,23 +17,12 @@ server, key, ts = long_poll['server'], long_poll['key'], long_poll['ts']
 print("готов к работе")
 
  #+ str(long_poll))
-
 def write_msg_attach(user_id, text, att_url):
     vk_bot.method('messages.send',
                   {'user_id': user_id,
                    'attachment': att_url,
                    'message': text,
-                   'random_id': random.randint(0, 5000)})
-def get_last_post(owner_id, count, offset, filter):
-    response = vk_bot_user.method('wall_get',
-                                  {'owner_id': owner_id,
-                                   'count': count,
-                                   'offset': offset,
-                                   'filter': filter})
-
-    return response['items'][0]['id']
-vk_bot_user = vk_api.VkApi(token=ACCOUNT_TOKEN)
-
+                   'random_id': random.randint(0, 1000)})
 
 while True:
  long_poll = requests.get(
@@ -48,28 +39,52 @@ while True:
             write_msg(user_id, 'здоров, ' + (user_name[0]['first_name']))  # cooбщение пользователю
         print(str(user_name[0]['first_name']) + ' ' +
               str(user_name[0]['last_name']) + ' написал(а) боту - ' + str(update[0][6]))  # cooбщение пользователя
-        if 'красив' in update[0][6]:
-            group_id = -35684707
-            post_id = get_last_post(group_id, 1, 1, 'owner')
-            attach = 'wall' + str(group_id) + '_' + str(post_id)
-            write_msg_attach(user_id, 'держи', attach)
+        if 'расписание' in update[0][6]:
+            if tomm == 8:
+                write_msg(user_id, 'Технология, '
+                                   'география, '
+                                   'алгебра, '
+                                   'физика, '
+                                   'химия, '
+                                   'физра')
+            elif tomm == 2:
+                write_msg(user_id, 'Литра, '
+                                   'черчение, '
+                                   'общество, '
+                                   'инглиш, '
+                                   'биология, '
+                                   'геометрия, '
+                                   'кл. час')
+            elif tomm == 3:
+                write_msg(user_id, 'Русский, '
+                                   'инглиш, '
+                                   'физра, '
+                                   'история, '
+                                   'алгебра, '
+                                   'химия')
+            elif tomm == 4:
+                write_msg(user_id, 'Физика, '
+                                   'география, '
+                                   'русский, '
+                                   'инглиш, '
+                                   'обж, '
+                                   'геометрия')
+            elif tomm == 5:
+                write_msg(user_id, 'Музыка, '
+                                   'изо, '
+                                   'инфа, '
+                                   'биология, '
+                                   'русский, '
+                                   'история')
+            elif tomm == 6:
+                write_msg(user_id, 'Литра, '
+                                   'геометрия, '
+                                   'физра, '
+                                   'история, '
+                                   'спб, '
+                                   'алгебра')
+            elif tomm == 7:
+                write_msg(user_id, 'завтра мы не учимся')
 
-        elif 'матриц' in update[0][6]:
-            write_msg_attach(user_id,
-                             'Во имя чего, мистер Андерсен?',
-                             'audio354852936_456239159')
-        elif 'хочу' in update[0][6]:
-            write_msg_attach(user_id,
-                             '',
-                             'photo-175213469_456239022')
-        elif 'хачу' in update[0][6]:
-            write_msg_attach(user_id,
-                             '',
-                             'photo-175213469_456239022')
-        elif 'нет смысла' in update[0][6]:
-            write_msg_attach(user_id,
-                             '',
-                             'photo-133584636_456240049')
-        else: write_msg(user_id, 'кавуо')
     # меняем ts для след запроса
  ts = long_poll['ts']
