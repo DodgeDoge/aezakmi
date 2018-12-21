@@ -1,11 +1,11 @@
 import random
 import datetime
 d = datetime.date.today()
-tomm = datetime.datetime.isoweekday(d) + 1
+tomm = datetime.datetime.isoweekday(d) + 4
 import requests
 import vk_api
 from config import *
-request = request.lower
+
 
 def write_msg(user_id, text):
     vk_bot.method('messages.send', {'user_id': user_id, 'message': text, 'random_id': random.randint(0, 1000)})
@@ -26,7 +26,7 @@ def write_msg_attach(user_id, text, att_url):
 
 while True:
  long_poll = requests.get(
-        'https://{server}?act={act}&key={key}&ts={ts}&wait=1500'.format(server=server,
+        'https://{server}?act={act}&key={key}&ts={ts}&wait=15000'.format(server=server,
                                                                        act='a_check',
                                                                        key=key,
                                                                        ts=ts)).json()
@@ -39,6 +39,8 @@ while True:
             write_msg(user_id, 'здоров, ' + (user_name[0]['first_name']))  # cooбщение пользователю
         print(str(user_name[0]['first_name']) + ' ' +
               str(user_name[0]['last_name']) + ' написал(а) боту - ' + str(update[0][6]))  # cooбщение пользователя
+        if '!команды' in update[0][6]
+            write_msg(user_id, 'привет, расписание')
         if 'расписание' in update[0][6]:
             if tomm == 8:
                 write_msg(user_id, 'Технология, '
