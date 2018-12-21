@@ -1,7 +1,7 @@
 import random
 import datetime
 d = datetime.date.today()
-tomm = datetime.datetime.isoweekday(d) + 4
+tomm = datetime.datetime.isoweekday(d) + 1
 import requests
 import vk_api
 from config import *
@@ -39,8 +39,6 @@ while True:
             write_msg(user_id, 'здоров, ' + (user_name[0]['first_name']))  # cooбщение пользователю
         print(str(user_name[0]['first_name']) + ' ' +
               str(user_name[0]['last_name']) + ' написал(а) боту - ' + str(update[0][6]))  # cooбщение пользователя
-        if '!команды' in update[0][6]
-            write_msg(user_id, 'привет, расписание')
         if 'расписание' in update[0][6]:
             if tomm == 8:
                 write_msg(user_id, 'Технология, '
